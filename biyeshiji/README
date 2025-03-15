@@ -1,0 +1,43 @@
+project_root/
+│
+├── configs/                  # 配置文件
+│   ├── camera_params.yaml    # 传感器标定参数
+│   ├── gripper_config.ini    # AG夹爪Modbus配置
+│   └── model_paths.json      # 神经网络模型路径
+│
+├── src/                      # 核心源代码
+│   ├── sensors/              # 传感器驱动层
+│   │   ├── __init__.py
+│   │   ├── gelsight_driver.py    # GelSight触觉传感器驱动
+│   │   ├── realsense_driver.py   # RealSense视觉驱动
+│   │   └── ag_gripper.py         # AG夹爪Modbus控制
+│   │
+│   ├── processing/           # 数据处理层
+│   │   ├── tactile_processor.py  # 触觉梯度/力场计算
+│   │   ├── vision_processor.py   # 视觉点云/YOLO检测
+│   │   └── fusion_algorithms.py  # 多模态融合算法
+│   │
+│   ├── models/               # 建模与控制层
+│   │   ├── deformation_model.py  # 柔性物体形变模型
+│   │   └── grasp_controller.py   # 自适应抓取算法
+│   │
+│   ├── utils/                # 工具函数
+│   │   ├── visualization.py  # Open3D/热力图可视化
+│   │   └── thread_utils.py   # 多线程队列/同步工具
+│   │
+│   └── main.py               # 主程序入口
+│
+├── models/                   # 预训练模型
+│   ├── resnet18_gelsight.pth
+│   └── yolov8_grasp.pt
+│
+├── tests/                    # 单元测试
+│   ├── test_sensors.py
+│   └── test_fusion.py
+│
+├── docs/                     # 设计文档
+│   ├── hardware_setup.md
+│   └── dataflow_diagram.pdf
+│
+├── requirements.txt          # 依赖库列表
+└── README.md
