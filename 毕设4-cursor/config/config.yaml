@@ -1,0 +1,208 @@
+# 系统配置
+system:
+  name: "柔性物体抓取系统"
+  version: "1.0.0"
+  debug: false
+  log_level: INFO
+  save_data: true
+  data_path: "data/"
+
+# 视觉传感器配置
+vision:
+  device_id: 0
+  width: 1280
+  height: 720
+  fps: 30
+  depth_scale: 0.001  # 深度图比例因子
+  min_depth: 0.1      # 最小深度值
+  max_depth: 2.0      # 最大深度值
+
+# 触觉传感器配置
+tactile:
+  port: "COM3"        # GelSight Mini串口
+  baud_rate: 115200
+  image_width: 640
+  image_height: 480
+  fps: 30
+  exposure: 1000
+  gain: 0
+
+# 数据融合配置
+fusion:
+  update_rate: 30     # 融合更新频率
+  weight_vision: 0.7  # 视觉数据权重
+  weight_tactile: 0.3 # 触觉数据权重
+
+# 物体建模配置
+modeling:
+  update_rate: 30
+  max_points: 1000    # 最大点云数量
+  voxel_size: 0.01    # 体素大小
+  normal_radius: 0.03 # 法向量计算半径
+
+# 控制配置
+control:
+  gripper_port: "COM4"  # 夹爪串口
+  baud_rate: 115200
+  max_force: 95        # 最大夹持力
+  min_force: 10        # 最小夹持力
+  max_width: 160       # 最大开口宽度
+  min_width: 0         # 最小开口宽度
+
+# 安全配置
+safety:
+  force_threshold: 0.8    # 力限制阈值(相对于最大力)
+  collision_threshold: 0.5 # 碰撞检测阈值
+  velocity_threshold: 0.1  # 速度限制阈值
+  workspace_limits:        # 工作空间限制
+    x: [-0.5, 0.5]        # X轴范围
+    y: [-0.5, 0.5]        # Y轴范围
+    z: [0.0, 0.5]         # Z轴范围
+  emergency_stop:          # 紧急停止配置
+    max_response_time: 0.1 # 最大响应时间(秒)
+    recovery_time: 1.0     # 恢复时间(秒)
+    auto_recovery: true    # 是否自动恢复
+
+# 数据记录配置
+logging:
+  save_raw_data: true     # 是否保存原始数据
+  save_processed_data: true # 是否保存处理后的数据
+  save_analysis: true     # 是否保存分析结果
+  max_file_size: 1000     # 最大文件大小(MB)
+  max_files: 10           # 最大文件数量
+  compression: true       # 是否压缩数据
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "data/logs/system.log"
+  max_size: 10485760  # 10MB
+  backup_count: 5
+
+# 可视化配置
+visualization:
+  update_rate: 30         # 更新频率
+  show_raw_data: true     # 是否显示原始数据
+  show_processed_data: true # 是否显示处理后的数据
+  show_analysis: true     # 是否显示分析结果
+  save_screenshots: true  # 是否保存截图
+  screenshot_path: "data/screenshots/" # 截图保存路径
+
+# 抓取策略配置
+grasp_strategy:
+  force_learning_rate: 0.1  # 力学习率
+  min_success_rate: 0.6     # 最小成功率
+  max_success_rate: 0.8     # 最大成功率
+  history_size: 5           # 历史数据大小
+  feature_radius: 0.03      # 特征计算半径
+  model_params:             # 模型参数
+    n_estimators: 100       # 树的数量
+    max_depth: 10           # 最大深度
+    random_state: 42        # 随机种子
+  training:                 # 训练配置
+    batch_size: 32          # 批次大小
+    epochs: 100             # 训练轮数
+    validation_split: 0.2   # 验证集比例
+
+# 点云处理配置
+point_cloud_processing:
+  voxel_size: 0.01          # 体素大小
+  normal_radius: 0.03       # 法向量计算半径
+  normal_max_nn: 30         # 法向量最大邻点数
+  outlier_nb_neighbors: 20  # 离群点检测邻点数
+  outlier_std_ratio: 2.0    # 离群点标准差比例
+  fpfh_radius: 0.05         # FPFH特征计算半径
+  fpfh_max_nn: 30           # FPFH特征最大邻点数
+  registration:             # 配准参数
+    distance_threshold: 0.05 # 距离阈值
+    edge_length_threshold: 0.9 # 边长度阈值
+    ransac_iterations: 4000000 # RANSAC迭代次数
+    ransac_confidence: 0.999   # RANSAC置信度
+  segmentation:             # 分割参数
+    eps: 0.05               # DBSCAN邻域半径
+    min_points: 10          # 最小点数
+    num_clusters: 5         # 聚类数量
+  feature_extraction:       # 特征提取参数
+    radius: 0.03            # 特征计算半径
+    min_neighbors: 3        # 最小邻点数
+
+# 数据处理配置
+data_processing:
+  cache_size: 10            # 缓存大小
+  enable_augmentation: true # 是否启用数据增强
+  max_processing_time: 0.1  # 最大处理时间(秒)
+  queue_size: 100           # 队列大小
+  batch_size: 32            # 批处理大小
+  num_workers: 4            # 工作线程数
+  log_level: INFO           # 日志级别
+  save_processed: true      # 是否保存处理后的数据
+  save_path: "data/processed/" # 处理后数据保存路径
+  memory_threshold: 0.8     # 内存使用阈值
+  max_cache_size: 1000      # 最大缓存大小
+  compression_level: 6      # 压缩级别
+  cleanup_interval: 300     # 清理间隔(秒)
+  enable_compression: true  # 是否启用数据压缩
+  compression_ratio: 0.5    # 压缩比率
+  memory_limit: 4096        # 内存限制(MB)
+  gc_threshold: 1000        # 垃圾回收阈值
+  cache_ttl: 3600          # 缓存过期时间(秒)
+
+# 机器学习配置
+ml:
+  model:
+    type: "GraspNet"
+    input_size: [224, 224]
+    batch_size: 32
+    learning_rate: 0.001
+    epochs: 100
+    dropout_rate: 0.5
+    
+  training:
+    data_dir: "data/training"
+    validation_split: 0.2
+    save_dir: "data/models"
+    early_stopping_patience: 10
+    learning_rate_scheduler:
+      type: "ReduceLROnPlateau"
+      factor: 0.5
+      patience: 5
+      min_lr: 0.00001
+      
+  inference:
+    model_path: "data/models/best_model.pth"
+    confidence_threshold: 0.8
+    batch_size: 1
+    num_workers: 4
+    
+  data_augmentation:
+    enable: true
+    rotation_range: [-30, 30]
+    translation_range: [-10, 10]
+    scale_range: [0.8, 1.2]
+    brightness_range: [0.8, 1.2]
+    noise_std: 0.1
+
+# 标定配置
+calibration:
+  camera:
+    pattern_size: [9, 6]
+    square_size: 0.025
+    min_images: 10
+    
+  camera_to_robot:
+    min_poses: 5
+    method: "SVD"
+    
+  tactile_to_gripper:
+    min_poses: 5
+    method: "SVD"
+
+# 性能监控配置
+monitoring:
+  enable: true
+  interval: 1.0  # 秒
+  metrics:
+    - "cpu_usage"
+    - "memory_usage"
+    - "gpu_usage"
+    - "processing_time"
+    - "queue_size"
+  save_path: "data/monitoring/"
