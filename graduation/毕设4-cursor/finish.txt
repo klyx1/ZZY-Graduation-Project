@@ -1,0 +1,5 @@
+realsense搞定 分辨率需要640*480 30
+
+已成功运行:
+test_realsense.py
+test_vision.py
